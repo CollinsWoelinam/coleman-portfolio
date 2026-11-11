@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #121212;
+  --surface: #1E1E1E;
+  --surface-elevated: #282828;
+  --text-primary: #F5F5F0;
+  --text-secondary: #A0A0A0;
+  --accent-olive: #84936A;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--text-primary);
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  overflow-x: hidden;
+  selection-background-color: #84936A;
+  selection-color: #121212;
+}
+
+::selection {
+  background-color: #84936A;
+  color: #121212;
+}
+
+/* Custom minimal scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #121212;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #2E2E2E;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #84936A;
+}
+
+/* Subtle image shimmer animation */
+@keyframes pulseShimmer {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
+
+.shimmer-loading {
+  animation: pulseShimmer 2s infinite ease-in-out;
+}
+
