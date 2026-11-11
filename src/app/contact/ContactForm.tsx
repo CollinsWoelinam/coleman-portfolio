@@ -1,15 +1,34 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, Suspense } from "react";
+import { useSearchParams } from "next/navigation";
 import { Send, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 
-export default function ContactForm() {
+function ContactFormInner() {
+  const searchParams = useSearchParams();
+  const subjectParam = searchParams.get("subject") || "";
+  const speciesParam = searchParams.get("species") || "";
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
-    subject: "",
-    message: "",
+    subject: subjectParam || "",
+    message: speciesParam
+      ? `Hello Cole,\n\nI am interested in licensing or acquiring an archival fine art print of the "${speciesParam}" photograph. Please share details regarding available sizing, paper finishes, and pricing.\n\nThank you,`
+      : "",
   });
+
+  useEffect(() => {
+    if (subjectParam && !formData.subject) {
+      setFormData((prev) => ({ ...prev, subject: subjectParam }));
+    }
+    if (speciesParam && !formData.message) {
+      setFormData((prev) => ({
+        ...prev,
+        message: `Hello Cole,\n\nI am interested in licensing or acquiring an archival fine art print of the "${speciesParam}" photograph. Please share details regarding available sizing, paper finishes, and pricing.\n\nThank you,`,
+      }));
+    }
+  }, [subjectParam, speciesParam, formData.subject, formData.message]);
 
   const [status, setStatus] = useState<"idle" | "submitting" | "success" | "error">("idle");
   const [errorMessage, setErrorMessage] = useState("");
@@ -163,3 +182,10 @@ export default function ContactForm() {
   );
 }
 
+export default function ContactForm() {
+  return (
+    <Suspense fallback={<div className="p-8 text-center text-xs font-mono text-[#737373]">Loading form...</div>}>
+      <ContactFormInner />
+    </Suspense>
+  );
+}

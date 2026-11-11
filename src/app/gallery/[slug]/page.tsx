@@ -52,8 +52,26 @@ export default async function PhotoDetailPage({ params }: PhotoDetailPageProps) 
     .filter((p) => p.id !== photo.id)
     .slice(0, 3);
 
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "ImageObject",
+    name: photo.title,
+    caption: `${photo.common_name} (${photo.scientific_name})`,
+    description: photo.description,
+    contentUrl: photo.image_url,
+    datePublished: photo.created_at,
+    author: {
+      "@type": "Person",
+      name: "Cole_man",
+    },
+  };
+
   return (
     <div className="min-h-screen pt-28 pb-24">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <div className="max-w-7xl mx-auto px-6 sm:px-8 space-y-12">
         {/* Back navigation & actions */}
         <div className="flex items-center justify-between">
